@@ -1,0 +1,17 @@
+*.class
+bin/
+build/
+target/
+out/
+.metadata/
+.settings/
+.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+.env
+.env.*
+!.env.example

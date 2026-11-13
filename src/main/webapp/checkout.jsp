@@ -5,7 +5,8 @@
 <%@ page import="com.tap.module.User"%>
 <%
 List<CartItem> cartItems = (List<CartItem>)request.getAttribute("cartItems");
-double total = (Double)request.getAttribute("total");
+Double totalObj = (Double)request.getAttribute("total");
+double total = totalObj != null ? totalObj : 0.0;
 User user = (User) session.getAttribute("loggedUser");
 %>
 <!DOCTYPE html>
@@ -13,7 +14,7 @@ User user = (User) session.getAttribute("loggedUser");
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FoodHub | Checkout</title>
+    <title>FoodHub | Secure Checkout</title>
     <link rel="stylesheet" href="CSS/home.css">
 </head>
 <body>
@@ -30,7 +31,7 @@ User user = (User) session.getAttribute("loggedUser");
         </nav>
     </header>
 
-    <div class="container">
+    <div class="container" style="margin-top: 30px;">
         <h2 class="section-title">Secure Checkout</h2>
 
         <div class="cart-layout">
@@ -38,56 +39,57 @@ User user = (User) session.getAttribute("loggedUser");
             <div class="cart-items-card">
                 <form action="placeOrder" method="post" class="checkout-form">
                     
-                    <div class="order-sidebar-row" style="gap: 8px;">
-                        <label for="address" style="font-size: 16px; font-weight: 600;">Delivery Address</label>
+                    <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px;">
+                        <label for="address" style="font-size: 16px; font-weight: 700; color: var(--text-primary);">Delivery Address</label>
                         <textarea
                             id="address"
                             name="address"
                             rows="4"
-                            placeholder="Enter delivery address"
-                            required><%= user != null ? user.getAddress() : "" %></textarea>
+                            placeholder="Enter detailed delivery address (House No, Street, Landmark)..."
+                            style="background: var(--bg-main); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 14px; font-size: 15px; outline: none; width: 100%;"
+                            required><%= user != null && user.getAddress() != null ? user.getAddress() : "" %></textarea>
                     </div>
 
-                    <div class="order-sidebar-row" style="gap: 8px; margin-top: 10px;">
-                        <label style="font-size: 16px; font-weight: 600;">Payment Method</label>
+                    <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px;">
+                        <label style="font-size: 16px; font-weight: 700; color: var(--text-primary);">Select Payment Method</label>
                         
                         <div class="payment-grid">
                             <label class="payment-option">
                                 <input type="radio" name="payment" value="Cash" checked required>
                                 <div class="payment-card">
-                                    <span style="font-size: 24px;">💵</span>
-                                    <span>Cash</span>
+                                    <span style="font-size: 28px;">💵</span>
+                                    <span style="font-weight: 700;">Cash on Delivery</span>
                                 </div>
                             </label>
                             
                             <label class="payment-option">
                                 <input type="radio" name="payment" value="UPI" required>
                                 <div class="payment-card">
-                                    <span style="font-size: 24px;">📱</span>
-                                    <span>UPI</span>
+                                    <span style="font-size: 28px;">📱</span>
+                                    <span style="font-weight: 700;">UPI / GooglePay</span>
                                 </div>
                             </label>
                             
                             <label class="payment-option">
                                 <input type="radio" name="payment" value="Card" required>
                                 <div class="payment-card">
-                                    <span style="font-size: 24px;">💳</span>
-                                    <span>Card</span>
+                                    <span style="font-size: 28px;">💳</span>
+                                    <span style="font-weight: 700;">Credit / Debit Card</span>
                                 </div>
                             </label>
                         </div>
                     </div>
 
-                    <button type="submit" class="menuBtn" style="padding: 14px; font-size: 16px; margin-top: 20px;">
-                        Place Order (₹<%=total%>)
+                    <button type="submit" class="menuBtn" style="padding: 16px; font-size: 17px; width: 100%; margin-top: 10px;">
+                        🔒 Place Order & Pay (₹<%=total%>)
                     </button>
                 </form>
             </div>
 
             <!-- Right Side: Order Summary -->
             <div class="cart-summary-card">
-                <h3 style="font-size: 18px; font-weight: 700; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 16px;">
-                    Items Summary
+                <h3 style="font-size: 18px; font-weight: 700; border-bottom: 1px solid var(--border-color); padding-bottom: 14px; margin-bottom: 18px;">
+                    Order Summary
                 </h3>
 
                 <table class="cart-table" style="margin-bottom: 20px;">
@@ -103,13 +105,13 @@ User user = (User) session.getAttribute("loggedUser");
                             <% for(CartItem item : cartItems) { %>
                                 <tr>
                                     <td style="padding: 10px 0;">
-                                        <div style="font-weight: 600;"><%=item.getProductName()%></div>
-                                        <div style="font-size: 12px; color: var(--text-muted);"><%=item.getSizeName()%></div>
+                                        <div style="font-weight: 700;"><%=item.getProductName()%></div>
+                                        <div style="font-size: 12px; color: var(--text-secondary);"><%=item.getSizeName()%></div>
                                     </td>
-                                    <td style="padding: 10px 0; text-align: center; font-weight: 500;">
+                                    <td style="padding: 10px 0; text-align: center; font-weight: 600;">
                                         <%=item.getQuantity()%>
                                     </td>
-                                    <td style="padding: 10px 0; text-align: right; font-weight: 600;">
+                                    <td style="padding: 10px 0; text-align: right; font-weight: 700; color: var(--primary);">
                                         ₹<%=item.getTotalPrice()%>
                                     </td>
                                 </tr>
@@ -119,17 +121,17 @@ User user = (User) session.getAttribute("loggedUser");
                 </table>
 
                 <div class="summary-row">
-                    <span style="color: var(--text-muted);">Items Total</span>
-                    <span style="font-weight: 500;">₹<%=total%></span>
+                    <span style="color: var(--text-secondary);">Items Total</span>
+                    <span style="font-weight: 600;">₹<%=total%></span>
                 </div>
                 
                 <div class="summary-row">
-                    <span style="color: var(--text-muted);">Delivery Charge</span>
-                    <span style="color: var(--success); font-weight: 600;">FREE</span>
+                    <span style="color: var(--text-secondary);">Delivery Charge</span>
+                    <span style="color: var(--success); font-weight: 700;">FREE</span>
                 </div>
 
                 <div class="summary-row total">
-                    <span>To Pay</span>
+                    <span>Total Payable</span>
                     <span>₹<%=total%></span>
                 </div>
             </div>

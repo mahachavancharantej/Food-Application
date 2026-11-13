@@ -4,7 +4,8 @@
 <%@ page import="com.tap.module.CartItem"%>
 <%
 List<CartItem> cartItems = (List<CartItem>)request.getAttribute("cartItems");
-double total = (Double)request.getAttribute("total");
+Double totalObj = (Double)request.getAttribute("total");
+double total = totalObj != null ? totalObj : 0.0;
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,8 +29,8 @@ double total = (Double)request.getAttribute("total");
         </nav>
     </header>
 
-    <div class="container">
-        <h2 class="section-title">Shopping Cart</h2>
+    <div class="container" style="margin-top: 30px;">
+        <h2 class="section-title">Your Shopping Cart</h2>
 
         <% if(cartItems != null && !cartItems.isEmpty()) { %>
             <div class="cart-layout">
@@ -49,25 +50,25 @@ double total = (Double)request.getAttribute("total");
                                 <tr>
                                     <td>
                                         <div class="cart-item-title"><%=item.getProductName()%></div>
-                                        <div class="cart-item-size">Size: <%=item.getSizeName()%></div>
+                                        <div class="cart-item-size">Portion Size: <%=item.getSizeName()%></div>
                                     </td>
                                     <td>
-                                        <div class="cart-qty-buttons">
-                                            <a href="updateCart?cartItemId=<%=item.getCartItemId()%>&action=minus">
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <a href="updateCart?cartItemId=<%=item.getCartItemId()%>&action=minus" style="text-decoration: none;">
                                                 <button type="button" class="cart-qty-btn">-</button>
                                             </a>
-                                            <span style="font-weight: 600; font-size: 15px; margin: 0 4px;"><%=item.getQuantity()%></span>
-                                            <a href="updateCart?cartItemId=<%=item.getCartItemId()%>&action=plus">
+                                            <span style="font-weight: 700; font-size: 15px; min-width: 20px; text-align: center;"><%=item.getQuantity()%></span>
+                                            <a href="updateCart?cartItemId=<%=item.getCartItemId()%>&action=plus" style="text-decoration: none;">
                                                 <button type="button" class="cart-qty-btn">+</button>
                                             </a>
                                         </div>
                                     </td>
-                                    <td style="font-weight: 600; font-size: 16px;">
+                                    <td style="font-weight: 800; font-size: 16px; color: var(--primary);">
                                         ₹<%=item.getTotalPrice()%>
                                     </td>
                                     <td>
                                         <a href="removeCartItem?cartItemId=<%=item.getCartItemId()%>" class="remove-btn">
-                                            Remove
+                                            🗑️ Remove
                                         </a>
                                     </td>
                                 </tr>
@@ -78,18 +79,18 @@ double total = (Double)request.getAttribute("total");
 
                 <!-- Right Side: Order Summary -->
                 <div class="cart-summary-card">
-                    <h3 style="font-size: 18px; font-weight: 700; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 16px;">
+                    <h3 style="font-size: 18px; font-weight: 700; border-bottom: 1px solid var(--border-color); padding-bottom: 14px; margin-bottom: 18px;">
                         Order Summary
                     </h3>
                     
                     <div class="summary-row">
-                        <span style="color: var(--text-muted);">Subtotal</span>
-                        <span style="font-weight: 500;">₹<%=total%></span>
+                        <span style="color: var(--text-secondary);">Subtotal</span>
+                        <span style="font-weight: 600;">₹<%=total%></span>
                     </div>
                     
                     <div class="summary-row">
-                        <span style="color: var(--text-muted);">Delivery Fee</span>
-                        <span style="color: var(--success); font-weight: 600;">FREE</span>
+                        <span style="color: var(--text-secondary);">Delivery Fee</span>
+                        <span style="color: var(--success); font-weight: 700;">FREE Express</span>
                     </div>
 
                     <div class="summary-row total">
@@ -98,8 +99,8 @@ double total = (Double)request.getAttribute("total");
                     </div>
 
                     <a href="checkout" style="text-decoration: none; display: block; margin-top: 24px;">
-                        <button class="menuBtn" style="padding: 14px; font-size: 16px;">
-                            Proceed to Checkout
+                        <button class="menuBtn" style="padding: 16px; font-size: 16px; width: 100%;">
+                            Proceed to Checkout →
                         </button>
                     </a>
                 </div>
@@ -107,9 +108,9 @@ double total = (Double)request.getAttribute("total");
         <% } else { %>
             <div class="empty-state">
                 <div class="empty-state-icon">🛒</div>
-                <h2>Your cart is empty</h2>
-                <p>Add some delicious meals from your favorite restaurants and they'll show up here!</p>
-                <a href="home" class="orderBtn">Browse Restaurants</a>
+                <h2>Your cart is currently empty</h2>
+                <p>Discover delicious meals from top restaurants near you and add them to your cart!</p>
+                <a href="home" class="orderBtn">Browse Restaurants Now</a>
             </div>
         <% } %>
     </div>

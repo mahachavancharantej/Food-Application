@@ -40,16 +40,19 @@ public class Orderdaoimp implements Orderdao{
 	            pstmt.setString(7, order.getDeliveryAddress());
 	            pstmt.setTimestamp(8, order.getOrderDate());
 
-	            pstmt.executeUpdate();
+	            int rows = pstmt.executeUpdate();
+
+	            System.out.println("Rows inserted = " + rows);
 
 	            ResultSet rs = pstmt.getGeneratedKeys();
 
-	            if(rs.next()){
-
-	                order.setOrderId(rs.getInt(1));
-
+	            if (rs.next()) {
+	                int id = rs.getInt(1);
+	                order.setOrderId(id);
+	                System.out.println("Generated Order ID = " + id);
+	            } else {
+	                System.out.println("No generated key returned.");
 	            }
-
 	        }
 	        catch(Exception e){
 

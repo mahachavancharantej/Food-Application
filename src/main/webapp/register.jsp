@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FoodHub - Create Account</title>
+    <title>FoodHub | Create Account</title>
     <link rel="stylesheet" href="CSS/style.css">
 </head>
 <body>
@@ -13,15 +13,15 @@
 <div class="container">
     <div class="card">
         <h1>🍔 FoodHub</h1>
-        <h3>Create an account to get started</h3>
+        <h3>Create an account to order fresh meals</h3>
 
         <form action="register" method="post">
             <div class="form-group">
-                <label for="username">Username</label>
+                <label for="username">Full Name / Username</label>
                 <input type="text"
                        id="username"
                        name="username"
-                       placeholder="Choose a username"
+                       placeholder="Enter your name"
                        required>
             </div>
 
@@ -48,7 +48,7 @@
                 <input type="tel"
                        id="phone"
                        name="phone"
-                       placeholder="Enter phone number"
+                       placeholder="Enter 10-digit phone number"
                        required>
             </div>
 
@@ -57,7 +57,7 @@
                 <textarea
                     id="address"
                     name="address"
-                    placeholder="Enter default delivery address"
+                    placeholder="Enter default delivery address..."
                     required></textarea>
             </div>
 
@@ -70,7 +70,7 @@
             </div>
 
             <button type="submit">
-                Register
+                Create Account
             </button>
         </form>
 

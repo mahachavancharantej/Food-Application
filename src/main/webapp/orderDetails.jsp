@@ -14,7 +14,7 @@ List<Map<String, Object>> detailedItems = (List<Map<String, Object>>)request.get
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FoodHub | Order Details #<%=order.getOrderId()%></title>
+    <title>FoodHub | Order Details #<%= order != null ? order.getOrderId() : "" %></title>
     <link rel="stylesheet" href="CSS/home.css">
 </head>
 <body>
@@ -31,108 +31,116 @@ List<Map<String, Object>> detailedItems = (List<Map<String, Object>>)request.get
         </nav>
     </header>
 
-    <div class="container">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-            <h2 class="section-title" style="margin-bottom: 0;">Order Details</h2>
-            <a href="myOrders" class="order-btn-view" style="text-decoration: none;">← Back to My Orders</a>
-        </div>
-
-        <div class="order-details-grid">
-            <!-- Left Side: Order Items List -->
-            <div class="cart-items-card">
-                <h3 style="font-size: 18px; font-weight: 700; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 16px;">
-                    Items Ordered
-                </h3>
-                <table class="order-items-table">
-                    <thead>
-                        <tr>
-                            <th>Item Name</th>
-                            <th>Size</th>
-                            <th>Qty</th>
-                            <th>Unit Price</th>
-                            <th style="text-align: right;">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% if(detailedItems != null) { %>
-                            <% for(Map<String, Object> item : detailedItems) { %>
-                                <tr>
-                                    <td>
-                                        <div style="font-weight: 600;"><%=item.get("productName")%></div>
-                                    </td>
-                                    <td>
-                                        <span style="font-size: 13px; color: var(--text-muted);"><%=item.get("sizeName")%></span>
-                                    </td>
-                                    <td style="font-weight: 500;">
-                                        <%=item.get("quantity")%>
-                                    </td>
-                                    <td style="font-weight: 500;">
-                                        ₹<%=item.get("unitPrice")%>
-                                    </td>
-                                    <td style="text-align: right; font-weight: 600;">
-                                        ₹<%=item.get("totalPrice")%>
-                                    </td>
-                                </tr>
-                            <% } %>
-                        <% } %>
-                    </tbody>
-                </table>
+    <div class="container" style="margin-top: 30px;">
+        <% if (order != null) { %>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px;">
+                <h2 class="section-title" style="margin-bottom: 0;">Order Receipt #<%=order.getOrderId()%></h2>
+                <a href="myOrders" class="order-btn-view" style="text-decoration: none;">← Back to My Orders</a>
             </div>
 
-            <!-- Right Side: Order Summary Details Sidebar -->
-            <div class="order-summary-sidebar">
-                <h3 class="order-sidebar-title">Order Status Summary</h3>
-                
-                <div class="order-sidebar-row">
-                    <span class="order-sidebar-label">Order ID</span>
-                    <span class="order-sidebar-value">#<%=order.getOrderId()%></span>
+            <div class="cart-layout">
+                <!-- Left Side: Order Items List -->
+                <div class="cart-items-card">
+                    <h3 style="font-size: 18px; font-weight: 700; border-bottom: 1px solid var(--border-color); padding-bottom: 14px; margin-bottom: 18px;">
+                        Items Ordered
+                    </h3>
+                    <table class="order-items-table">
+                        <thead>
+                            <tr>
+                                <th>Item Name</th>
+                                <th>Portion Size</th>
+                                <th>Qty</th>
+                                <th>Unit Price</th>
+                                <th style="text-align: right;">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if(detailedItems != null && !detailedItems.isEmpty()) { %>
+                                <% for(Map<String, Object> item : detailedItems) { %>
+                                    <tr>
+                                        <td>
+                                            <div style="font-weight: 700;"><%=item.get("productName")%></div>
+                                        </td>
+                                        <td>
+                                            <span style="font-size: 13px; color: var(--text-secondary);"><%=item.get("sizeName")%></span>
+                                        </td>
+                                        <td style="font-weight: 600;">
+                                            <%=item.get("quantity")%>
+                                        </td>
+                                        <td style="font-weight: 600;">
+                                            ₹<%=item.get("unitPrice")%>
+                                        </td>
+                                        <td style="text-align: right; font-weight: 800; color: var(--primary);">
+                                            ₹<%=item.get("totalPrice")%>
+                                        </td>
+                                    </tr>
+                                <% } %>
+                            <% } %>
+                        </tbody>
+                    </table>
                 </div>
 
-                <div class="order-sidebar-row">
-                    <span class="order-sidebar-label">Date & Time</span>
-                    <span class="order-sidebar-value"><%=order.getOrderDate()%></span>
-                </div>
+                <!-- Right Side: Order Summary Details Sidebar -->
+                <div class="order-summary-sidebar">
+                    <h3 style="font-size: 18px; font-weight: 700; border-bottom: 1px solid var(--border-color); padding-bottom: 14px; margin-bottom: 18px;">
+                        Order Status & Summary
+                    </h3>
+                    
+                    <div class="summary-row">
+                        <span style="color: var(--text-secondary);">Order ID</span>
+                        <span style="font-weight: 700;">#<%=order.getOrderId()%></span>
+                    </div>
 
-                <div class="order-sidebar-row">
-                    <span class="order-sidebar-label">Restaurant</span>
-                    <span class="order-sidebar-value">
-                        <strong><%=restaurant != null ? restaurant.getRestaurantName() : "Restaurant #" + order.getRestaurantId()%></strong>
-                        <% if(restaurant != null) { %>
-                            <div style="font-size: 12px; color: var(--text-muted); font-weight: normal; margin-top: 2px;">
-                                <%=restaurant.getAddress()%>
-                            </div>
-                        <% } %>
-                    </span>
-                </div>
+                    <div class="summary-row">
+                        <span style="color: var(--text-secondary);">Date & Time</span>
+                        <span style="font-size: 13px; color: var(--text-primary);"><%=order.getOrderDate()%></span>
+                    </div>
 
-                <div class="order-sidebar-row">
-                    <span class="order-sidebar-label">Order Status</span>
-                    <span class="order-sidebar-value">
-                        <span class="order-status-badge <%=order.getOrderStatus().toLowerCase().replace(" ", "-")%>" style="margin-top: 4px; display: inline-block;">
+                    <div class="summary-row">
+                        <span style="color: var(--text-secondary);">Restaurant</span>
+                        <span style="font-weight: 700; text-align: right;">
+                            <%=restaurant != null ? restaurant.getRestaurantName() : "Restaurant #" + order.getRestaurantId()%>
+                        </span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span style="color: var(--text-secondary);">Order Status</span>
+                        <span class="order-status-badge <%=order.getOrderStatus() != null ? order.getOrderStatus().toLowerCase().replace(" ", "-") : "pending"%>">
                             <%=order.getOrderStatus()%>
                         </span>
-                    </span>
-                </div>
+                    </div>
 
-                <div class="order-sidebar-row">
-                    <span class="order-sidebar-label">Payment Information</span>
-                    <span class="order-sidebar-value">
-                        Method: <strong><%=order.getPaymentMethod()%></strong><br>
-                        Status: <strong style="color: <%= order.getPaymentStatus().equalsIgnoreCase("Paid") ? "var(--success)" : "hsl(40, 95%, 45%)" %>"><%=order.getPaymentStatus()%></strong>
-                    </span>
-                </div>
+                    <div class="summary-row">
+                        <span style="color: var(--text-secondary);">Payment Method</span>
+                        <span style="font-weight: 600;"><%=order.getPaymentMethod()%></span>
+                    </div>
 
-                <div class="order-sidebar-row">
-                    <span class="order-sidebar-label">Delivery Address</span>
-                    <span class="order-sidebar-value" style="line-height: 1.4;"><%=order.getDeliveryAddress()%></span>
-                </div>
+                    <div class="summary-row">
+                        <span style="color: var(--text-secondary);">Payment Status</span>
+                        <span style="font-weight: 700; color: <%= (order.getPaymentStatus() != null && order.getPaymentStatus().equalsIgnoreCase("Paid")) ? "var(--success)" : "var(--warning)" %>;">
+                            <%=order.getPaymentStatus()%>
+                        </span>
+                    </div>
 
-                <div class="order-sidebar-row" style="border-top: 1px dashed var(--border); padding-top: 12px; margin-top: 8px;">
-                    <span class="order-sidebar-label" style="font-size: 13px;">Total Amount Paid</span>
-                    <span class="order-sidebar-value" style="font-size: 20px; font-weight: 700; color: var(--primary);">₹<%=order.getTotalAmount()%></span>
+                    <div style="margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--border-color);">
+                        <span style="font-size: 13px; color: var(--text-secondary); display: block; margin-bottom: 4px;">Delivery Address:</span>
+                        <p style="font-size: 14px; color: var(--text-primary); line-height: 1.4;"><%=order.getDeliveryAddress()%></p>
+                    </div>
+
+                    <div class="summary-row total" style="margin-top: 16px;">
+                        <span>Total Paid</span>
+                        <span>₹<%=order.getTotalAmount()%></span>
+                    </div>
                 </div>
             </div>
-        </div>
+        <% } else { %>
+            <div class="empty-state">
+                <div class="empty-state-icon">⚠️</div>
+                <h2>Order Not Found</h2>
+                <p>Could not retrieve details for this order. Please check your order history!</p>
+                <a href="myOrders" class="orderBtn">View My Orders</a>
+            </div>
+        <% } %>
     </div>
 
     <footer>

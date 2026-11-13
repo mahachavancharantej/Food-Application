@@ -24,8 +24,8 @@
         </nav>
     </header>
 
-    <div class="container">
-        <h2 class="section-title">Order History</h2>
+    <div class="container" style="margin-top: 30px;">
+        <h2 class="section-title">Your Order History</h2>
 
         <%
         List<Order> orders = (List<Order>)request.getAttribute("orders");
@@ -35,28 +35,28 @@
                 <% for(Order order : orders){ %>
                     <div class="order-history-card">
                         <div class="order-details-summary">
-                            <div class="order-header-row">
+                            <div class="order-header-row" style="display: flex; gap: 16px; align-items: center; margin-bottom: 8px;">
                                 <span class="order-restaurant-name">
                                     <%=order.getRestaurantName() != null ? order.getRestaurantName() : "Restaurant #" + order.getRestaurantId()%>
                                 </span>
                                 <span class="order-date-text">
-                                    <%=order.getOrderDate()%>
+                                    ⏱️ <%=order.getOrderDate()%>
                                 </span>
                             </div>
                             
-                            <div class="order-info-row">
+                            <div class="order-info-row" style="display: flex; gap: 20px; font-size: 14px; color: var(--text-secondary);">
                                 <span>Order ID: <strong>#<%=order.getOrderId()%></strong></span>
-                                <span>Total Paid: <strong>₹<%=order.getTotalAmount()%></strong></span>
+                                <span>Total Paid: <strong style="color: var(--primary);">₹<%=order.getTotalAmount()%></strong></span>
                                 <span>Payment Method: <strong><%=order.getPaymentMethod()%></strong></span>
                             </div>
                         </div>
                         
                         <div style="display: flex; align-items: center; gap: 20px;">
-                            <span class="order-status-badge <%=order.getOrderStatus().toLowerCase().replace(" ", "-")%>">
+                            <span class="order-status-badge <%=order.getOrderStatus() != null ? order.getOrderStatus().toLowerCase().replace(" ", "-") : "pending"%>">
                                 <%=order.getOrderStatus()%>
                             </span>
                             <a class="order-btn-view" href="orderDetails?orderId=<%=order.getOrderId()%>">
-                                View Details
+                                View Details →
                             </a>
                         </div>
                     </div>
@@ -66,8 +66,8 @@
             <div class="empty-state">
                 <div class="empty-state-icon">📦</div>
                 <h2>No Orders Found</h2>
-                <p>You haven't placed any orders yet. Try ordering some food!</p>
-                <a href="home" class="orderBtn">Order Now</a>
+                <p>You haven't placed any orders yet. Try ordering some delicious food!</p>
+                <a href="home" class="orderBtn" style="margin-top: 10px;">Order Food Now</a>
             </div>
         <% } %>
     </div>

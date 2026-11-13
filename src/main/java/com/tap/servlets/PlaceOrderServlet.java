@@ -3,9 +3,9 @@ package com.tap.servlets;
 import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.*;
 
 import com.tap.dao.Cartdao;
 import com.tap.dao.Cartitemdao;
@@ -37,6 +37,8 @@ public class PlaceOrderServlet extends HttpServlet {
             response.sendRedirect("login.jsp");
             return;
         }
+
+        System.out.println("Logged User ID: " + user.getUserId());
 
         String address = request.getParameter("address");
         String paymentMethod = request.getParameter("payment");
@@ -89,6 +91,7 @@ public class PlaceOrderServlet extends HttpServlet {
         Orderdao orderDao = new Orderdaoimp();
 
         orderDao.addOrder(order);
+        System.out.println("Generated Order ID: " + order.getOrderId());
 
         int orderId = order.getOrderId();
 

@@ -12,6 +12,21 @@ List<Restaurant> restaurants = (List<Restaurant>) request.getAttribute("restaura
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FoodHub | Premium Food Delivery</title>
     <link rel="stylesheet" href="CSS/home.css">
+    <script>
+        function filterRestaurants() {
+            var input = document.getElementById("searchBar").value.toLowerCase();
+            var cards = document.getElementsByClassName("restaurant-card");
+            for (var i = 0; i < cards.length; i++) {
+                var title = cards[i].querySelector("h2").innerText.toLowerCase();
+                var cuisine = cards[i].querySelector(".cuisine-text").innerText.toLowerCase();
+                if (title.includes(input) || cuisine.includes(input)) {
+                    cards[i].style.display = "flex";
+                } else {
+                    cards[i].style.display = "none";
+                }
+            }
+        }
+    </script>
 </head>
 <body>
 
@@ -27,19 +42,19 @@ List<Restaurant> restaurants = (List<Restaurant>) request.getAttribute("restaura
         </nav>
     </header>
 
-    <section class="hero">
+    <section class="hero" style="background-image: linear-gradient(180deg, rgba(13, 17, 23, 0.75) 0%, rgba(13, 17, 23, 0.95) 100%), url('CSS/images/foodapp_hero.jpg'); background-size: cover; background-position: center;">
         <div class="hero-content">
             <h1>Craving something delicious?</h1>
-            <h2>Get fresh, restaurant-quality food delivered straight to your door step.</h2>
-            <p>Fast Delivery • Best Quality Guarantee • Safe & Secure Payment</p>
-            <a href="#restaurants" class="orderBtn">
-                Explore Restaurants
-            </a>
+            <h2>Get fresh, top-rated restaurant meals delivered hot to your doorstep.</h2>
+            <p>🚀 30 Min Express Delivery • 🌟 4.5+ Rated Restaurants • 🔒 100% Secure Checkout</p>
+            <div style="max-width: 500px; margin: 0 auto 20px auto;">
+                <input type="text" id="searchBar" onkeyup="filterRestaurants()" placeholder="🔍 Search restaurants or cuisines..." style="padding: 16px 24px; border-radius: 30px; border: 1px solid var(--border-glow); width: 100%; font-size: 16px; background: rgba(22, 27, 34, 0.9); color: var(--text-primary); outline: none;">
+            </div>
         </div>
     </section>
 
     <div class="container" id="restaurants">
-        <h2 class="section-title">Popular Restaurants near you</h2>
+        <h2 class="section-title">Popular Restaurants Near You</h2>
 
         <% if (restaurants != null && !restaurants.isEmpty()) { %>
             <div class="restaurants-grid">
@@ -53,18 +68,18 @@ List<Restaurant> restaurants = (List<Restaurant>) request.getAttribute("restaura
                             
                             <div class="restaurant-meta">
                                 <span class="rating">⭐ <%=r.getRating()%></span>
-                                <span class="status-badge <%=r.getStatus().equalsIgnoreCase("Open") ? "open" : "closed"%>">
-                                    <%=r.getStatus()%>
+                                <span class="status-badge <%= (r.getStatus() != null && r.getStatus().equalsIgnoreCase("Open")) ? "open" : "closed"%>">
+                                    <%= (r.getStatus() != null) ? r.getStatus() : "Open"%>
                                 </span>
                             </div>
 
-                            <p><strong>Cuisine:</strong> <%=r.getCuisine()%></p>
-                            <p><strong>Delivery Time:</strong> <%=r.getDeliveryTime()%> mins</p>
-                            <p><strong>Price:</strong> ₹<%=r.getPriceForTwo()%> for two</p>
-                            <p><strong>Address:</strong> <%=r.getAddress()%></p>
+                            <p class="cuisine-text"><strong>Cuisine:</strong> <%=r.getCuisine()%></p>
+                            <p><strong>Delivery Time:</strong> ⏱️ <%=r.getDeliveryTime()%> mins</p>
+                            <p><strong>Price:</strong> 💳 ₹<%=r.getPriceForTwo()%> for two</p>
+                            <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 18px;">📍 <%=r.getAddress()%></p>
 
                             <a class="menuBtn" href="menu?restaurantId=<%=r.getRestaurantId()%>">
-                                View Menu
+                                View Menu & Order
                             </a>
                         </div>
                     </div>
@@ -74,7 +89,7 @@ List<Restaurant> restaurants = (List<Restaurant>) request.getAttribute("restaura
             <div class="empty-state">
                 <div class="empty-state-icon">🍽️</div>
                 <h2>No Restaurants Available</h2>
-                <p>We couldn't find any restaurants at the moment. Please check back later!</p>
+                <p>We couldn't find any active restaurants in your area right now. Please run `foodapp.sql` script to populate database records!</p>
             </div>
         <% } %>
     </div>

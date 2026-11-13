@@ -8,7 +8,7 @@ String errorStr = request.getParameter("error");
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FoodHub - Login</title>
+    <title>FoodHub | Login</title>
     <link rel="stylesheet" href="CSS/style.css">
 </head>
 <body>
@@ -16,11 +16,11 @@ String errorStr = request.getParameter("error");
 <div class="container">
     <div class="card">
         <h1>🍔 FoodHub</h1>
-        <h3>Welcome back! Please login.</h3>
+        <h3>Welcome back! Please login to your account.</h3>
 
         <% if (errorStr != null) { %>
             <div class="error-alert">
-                Invalid email or password. Please try again.
+                ⚠️ Invalid email or password. Please try again.
             </div>
         <% } %>
 
@@ -44,13 +44,13 @@ String errorStr = request.getParameter("error");
             </div>
 
             <button type="submit">
-                Login
+                Sign In to FoodHub
             </button>
         </form>
 
         <p>
             New to FoodHub? 
-            <a href="register.jsp">Create an account</a>
+            <a href="register.jsp">Create a new account</a>
         </p>
     </div>
 </div>
